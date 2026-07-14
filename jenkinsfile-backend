@@ -30,6 +30,16 @@ pipeline {
                 }
             }
         }
+
+        stage('SonarQube Analysis - User-service') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    dir('user-service') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
     }
 }
 
