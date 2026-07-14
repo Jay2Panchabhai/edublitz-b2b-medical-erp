@@ -110,7 +110,7 @@ pipeline {
         stage('Deploy to k8s') {
             steps {
                 sh '''
-                aws eks update-kubeconfig --region us-east-2 --name my-eks-cluster1
+                aws eks update-kubeconfig --region ap-south-1 --name my-eks-cluster1
                 kubectl apply -f k8s/configmaps/
                 kubectl apply -f k8s/deployments/
                 kubectl apply -f k8s/hpa/
