@@ -65,6 +65,29 @@ pipeline {
             }
         }
 
+        stage('Build Order Service') {
+            steps {
+                dir('order-service') {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'order-service/target/*.jar', fingerprint: true
+                }
+            }
+        }
+
+        stage('SonarQubeAnalysis - order service') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    dir('order-service') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }        
+
     }
 }
 
