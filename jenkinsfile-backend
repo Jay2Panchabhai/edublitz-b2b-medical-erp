@@ -40,6 +40,31 @@ pipeline {
                 }
             }
         }
+        
+        stage('Build product-service'){
+            steps{
+                dir('product-service'){
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+
+            post {
+                always {
+                    archiveArtifacts artifacts: 'product-service/target/*.jar', fingerprint: true
+                }
+            }
+        }
+
+        stage('SonarQube Analysis - product-service') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    dir('product-service') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
+
     }
 }
 
